@@ -1,0 +1,142 @@
+/*nav bar da home*/
+
+nav {
+    background-color: #4F46E5;
+    color: white;
+    width: 100%;
+    height: 100px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+}
+
+.logo {
+    position: relative;
+    top: -13px;
+    left: 245px;
+}
+
+.nav-buttons{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    right: 850px;
+    top: 56px;
+    gap: 0px;
+    align-items: center;
+    list-style: none;
+}
+
+.nav-buttons a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: 
+        background 0.2s, 
+        color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s,
+        border-width 0.2s;
+}
+
+.nav-buttons a:hover, .nav-buttons a.active {
+    background: #fff;
+    color: #4F46E5;
+    border-color: #4F46E5;
+    border-width: 1.1px;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.10);
+}
+
+.search-icon {
+    color: black;
+    font-size: 1.5rem;
+}
+
+.search-bar {
+    position: relative;
+    right: 770px;
+    width: max-content;
+    display: flex;
+    padding: 14px;
+    border-radius: 28px;
+    background-color: #f6f6f6;
+}
+
+.search-bar input {
+    font-size: 16px;
+    font-family: 'Lexend', sans-serif;
+    color: #333333;
+    margin-left: 14px;
+}
+
+
+
+/*login btns*/
+
+.login-buttons {
+    position: relative;
+    left: 560px;
+    display: flex;
+    gap: 39px;
+    list-style: none;
+}
+
+.register-button {
+    background-color: #7C3AED;
+    color: white;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.register-button:hover {
+    background-color: #8f5be9;
+}
+
+.login-button {
+    background-color: #fff;
+    color: #000;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.login-button:hover {
+    background-color: #e6dddd;
+}
+
+
+
+/*eventos destaques!*/
+
+.description-area {
+    text-align: center;
+}
+event-list
+
+.event-item {
+    background-color: #e9e7e7;
+    min-height: 450px;
+    max-height: 500px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    
+}
+
+.event-item img {
+    width: 650px;
+    height: 450px;
+}
