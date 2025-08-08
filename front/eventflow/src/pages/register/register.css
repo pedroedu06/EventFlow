@@ -1,0 +1,50 @@
+.register-container { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.navbar-register {
+    height: 70px;
+    background-color: #4F46E5;
+    color: white;
+}
+
+.navbar-register .logo-register {
+    height: 50px;
+    position: relative;
+    left: 900px;
+    top: 20px;
+}
+
+.navbar-register .back-button {
+    font-weight: 400;
+    position: relative;
+    top: 20px;
+    right: 80px;
+    cursor: pointer;
+
+}
+
+.register-form {
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #4F46E5;
+    padding: 60px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.10);
+    color: white;
+}
+
+.register-form input {
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.10);
+}
+
+

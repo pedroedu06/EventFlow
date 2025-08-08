@@ -10,7 +10,6 @@ const Home: React.FC = () => {
             <nav className="navbar">
                 <div className="logo">
                     <img src="" alt="EventFlow logo" />
-                    <span>EventFlow</span>
                 </div>
                 <div className="search-bar">
                     <span className="search-icon"><IoIosSearch /></span>
