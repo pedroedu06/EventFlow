@@ -74,8 +74,10 @@ nav {
     font-family: 'Lexend', sans-serif;
     color: #333333;
     margin-left: 14px;
+    outline: none;
+    border: none;
+    background: transparent;
 }
-
 
 
 /*login btns*/
@@ -123,20 +125,61 @@ nav {
 .description-area {
     text-align: center;
 }
-event-list
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px; /* Espaço entre os eventos */
+}
 
 .event-item {
-    background-color: #e9e7e7;
-    min-height: 450px;
-    max-height: 500px;
-    height: auto;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    
+    align-items: center;
+    background: #e9e7e7;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 24px;
+    gap: 32px;
 }
 
 .event-item img {
-    width: 650px;
-    height: 450px;
+    width: 560px;
+    height: 360px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #fff;
+    transition: 1s;
+}
+
+.event-item img:hover {
+    transform: scale(1.058);
+    z-index: 2;
+}
+
+.event-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.event-info button {
+    background-color: #4F46E5;
+    color: white;
+    padding: 10px 20px;
+    width: 300px;
+    cursor: pointer;
+    font-weight: 400;
+    border-radius: 20px;
+    box-shadow: 2px 2px 8px rgba(79,70,229,0.10);
+}
+
+/*footer*/
+
+.footer {
+    margin-top: 40px;
+    background-color:  #4F46E5;
+    padding: 20px;
+    height: 120px;
 }
