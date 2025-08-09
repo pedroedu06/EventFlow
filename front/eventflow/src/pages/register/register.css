@@ -26,7 +26,9 @@
     cursor: pointer;
 
 }
-
+.input-data {
+    width: 100px;
+}
 .register-form {
     width: 700px;
     display: flex;
@@ -45,6 +47,26 @@
     border-radius: 8px;
     border: none;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.10);
+}
+
+.register-form button {
+    width: 400px;
+    height: 50px;
+    font-weight: 400;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: #7C3AED;
+    color: white;
+    border-radius: 40px;
+    border: none;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.10);
+    cursor: pointer;
+    transition: 1s;
+}
+
+.register-form button:hover {
+    background-color: #8f5be9;
 }
 
 

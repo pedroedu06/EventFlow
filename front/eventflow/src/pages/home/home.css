@@ -127,7 +127,7 @@
 .event-list {
     display: flex;
     flex-direction: column;
-    gap: 32px; /* Espaço entre os eventos */
+    gap: 32px; 
 }
 
 .event-item {
