@@ -10,6 +10,8 @@ const Register: React.FC = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("")
+    const [errorEmail, setErrorEmail] = useState("");
+    const [erroAge, setErrorAge] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -20,11 +22,36 @@ const Register: React.FC = () => {
         }
         setError("");
 
-        setEmail("");
-        setUsername("");
-        setBirthdate("");
-        setPassword("");
-        setConfirmPassword("");
+        const dominiosPermitidos = [
+            "gmail.com",
+            "yahoo.com",
+            "hotmail.com",
+            "outlook.com",
+            "@live.com"
+        ];
+
+        if (!dominiosPermitidos.some(dom => email.endsWith(dom))){
+            setErrorEmail("Insira um email valido");
+            return;
+        }
+        setErrorEmail("")
+
+        const birthdateveric = (birthdate: string) => {
+            const today = new Date();
+            const birthdateOBJ = new Date(birthdate);
+            let age = today.getFullYear() - birthdateOBJ.getFullYear();
+            const mes = today.getMonth() - birthdateOBJ.getMonth();
+            if (mes < 0 || (mes === 0 && today.getDate() < birthdateOBJ.getDate())){
+                age--;
+            }
+            return age  
+        }
+
+        const age = birthdateveric(birthdate)
+        if (age < 18) {
+            setErrorAge("Idade invalida");
+        }
+            
     }
 
      const backToHome = () => {
@@ -41,10 +68,12 @@ const Register: React.FC = () => {
             <form className="register-form" onSubmit={handleSubmit}>
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder="Insira um Email" required onChange={(e) => setEmail(e.target.value)}/>
+                {errorEmail && <span style={{color: 'red'}}>{errorEmail}</span>}
                 <label htmlFor="username">Nome de usuário</label>
                 <input type="text" placeholder="Insira um nome de usuário" required onChange={(e) => setUsername(e.target.value)}/>
                 <label htmlFor="birthdate">Data de nascimento</label>
                 <input type="date" placeholder="Insira sua data de nascimento" className="input-data" required onChange={(e) => setBirthdate(e.target.value)}/>
+                {erroAge && <span style={{color: 'red'}}>{erroAge}</span>}
                 <label htmlFor="password">Senha</label>
                 <input type="password" placeholder="Insira sua senha" required onChange={(e) => setPassword(e.target.value)}/>
                 <label htmlFor="confirm-password">Confirme a senha</label>
