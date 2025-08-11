@@ -30,7 +30,7 @@
     width: 100px;
 }
 .register-form {
-    width: 700px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     gap: 10px;
