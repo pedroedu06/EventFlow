@@ -22,7 +22,7 @@ const Register: React.FC = () => {
         }
         setError("");
 
-        const dominiosPermitidos = [
+        const dominiosPermitidos: string[] = [
             "gmail.com",
             "yahoo.com",
             "hotmail.com",
@@ -51,7 +51,7 @@ const Register: React.FC = () => {
         if (age < 18) {
             setErrorAge("Idade invalida");
         }
-            
+
     }
 
      const backToHome = () => {
