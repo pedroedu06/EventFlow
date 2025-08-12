@@ -27,7 +27,7 @@ const Register: React.FC = () => {
             "yahoo.com",
             "hotmail.com",
             "outlook.com",
-            "@live.com"
+            "live.com"
         ];
 
         if (!dominiosPermitidos.some(dom => email.endsWith(dom))){
@@ -50,8 +50,23 @@ const Register: React.FC = () => {
         const age = birthdateveric(birthdate)
         if (age < 18) {
             setErrorAge("Idade invalida");
+            return;
         }
 
+        console.log(email, username, password, birthdate);
+
+        axios.post("http://localhost:5000/register", {
+            email,
+            username,
+            birthdate,
+            password
+        })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error("Erro ao registrar usuário:", error);
+        });
     }
 
      const backToHome = () => {
