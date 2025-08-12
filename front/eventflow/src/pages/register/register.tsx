@@ -1,7 +1,7 @@
 import "./register.css";
 import { SlArrowLeft } from "react-icons/sl";
 import React, { useState } from 'react';
-import { set, useForm } from "react-hook-form"
+import axios from 'axios';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState("");
