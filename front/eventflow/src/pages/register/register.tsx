@@ -2,7 +2,6 @@ import "./register.css";
 import { SlArrowLeft } from "react-icons/sl";
 import React, { useState } from 'react';
 import axios from 'axios';
-import { data } from "react-router-dom";
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState("");

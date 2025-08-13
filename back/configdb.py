@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import re
 
 app = Flask(__name__);
 CORS(app);
@@ -67,6 +68,42 @@ def listar_usuarios():
         return jsonify({"error": "erro ao listar usuários"}), 500
     finally:
         if cursor in locals():
+            cursor.close()
+        if mydb and mydb.is_connected():
+            mydb.close()
+
+
+@app.route("/login", methods=["POST"])
+def login():
+
+    dados = request.get_json()
+    loginForm = dados['loginForm']
+    password = dados['password']
+
+    isemail = re.match(r"[^@]+@[^@]+\.[^@]+", loginForm) is not None
+
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor(dictionary=True)
+
+        if isemail:
+            cursor.execute("SELECT * FROM usuarios WHERE email = %s", (loginForm,))
+        else:
+            cursor.execute("SELECT * FROM usuarios WHERE username = %s", (loginForm,))
+
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({'error': 'Usuario nao encontrado'}), 404
+        if user["password"] != password:
+            return jsonify({"error": 'Senha incorreta'})
+        
+        return jsonify({'message': "login bem sucedido", "user": user})
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if cursor:
             cursor.close()
         if mydb and mydb.is_connected():
             mydb.close()

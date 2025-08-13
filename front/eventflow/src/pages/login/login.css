@@ -5,8 +5,14 @@
     height: 90vh;
 }
 
+.errormensage{
+    margin-top: 10px;
+    display: block;
+}
+
 .loginConteiner-Form {
     width: 450px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -51,4 +57,10 @@
     margin-top: 10px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.abasdeesqueceuecriar a {
+    color: white;
 }
