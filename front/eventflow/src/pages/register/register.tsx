@@ -2,6 +2,7 @@ import "./register.css";
 import { SlArrowLeft } from "react-icons/sl";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { data } from "react-router-dom";
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -10,8 +11,9 @@ const Register: React.FC = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("")
-    const [errorEmail, setErrorEmail] = useState("");
+    const [errorEmailAddress, setErrorEmailAddress] = useState("");
     const [erroAge, setErrorAge] = useState("");
+    const [errorRegister, setErrorRegister] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,10 +33,10 @@ const Register: React.FC = () => {
         ];
 
         if (!dominiosPermitidos.some(dom => email.endsWith(dom))){
-            setErrorEmail("Insira um email valido");
+            setErrorEmailAddress("Insira um email valido");
             return;
         }
-        setErrorEmail("")
+        setErrorEmailAddress("");
 
         const birthdateveric = (birthdate: string) => {
             const today = new Date();
@@ -53,23 +55,38 @@ const Register: React.FC = () => {
             return;
         }
 
-        console.log(email, username, password, birthdate);
+        //listar usuarios
 
-        axios.post("http://localhost:5000/register", {
-            email,
-            username,
-            birthdate,
-            password
-        })
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error("Erro ao registrar usuário:", error);
-        });
+        axios.get("http://localhost:5000/usuarios")
+            .then(response => {
+                const usuarios = response.data;
+                const usernameExists = usuarios.some((user: any) => user.username === username);
+                const emailExists = usuarios.some((user: any) => user.email === email);
+
+                if (usernameExists || emailExists) {
+                    setErrorRegister("Email ou Username ja exixtem")
+                    return;
+                } else {
+                    axios.post("http://localhost:5000/register",{
+                        email,
+                        username,
+                        birthdate,
+                        password
+                    })
+                    .then(response => {
+                        console.log("Usuario criado com sucesso", response.data);
+                        })
+                    .catch(error =>{
+                        console.error("Erro ao registrar o usuario", error);
+                    })    
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao listar usuários:", error);
+            });
     }
 
-     const backToHome = () => {
+    const backToHome = () => {
         window.location.href = "/";
     }
 
@@ -81,9 +98,10 @@ const Register: React.FC = () => {
         </nav>
     <div className="register-container">
             <form className="register-form" onSubmit={handleSubmit}>
+                {errorRegister && <span style={{color: 'red'}}>{errorRegister}</span>}
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder="Insira um Email" required onChange={(e) => setEmail(e.target.value)}/>
-                {errorEmail && <span style={{color: 'red'}}>{errorEmail}</span>}
+                {errorEmailAddress && <span style={{color: 'red'}}>{errorEmailAddress}</span>}
                 <label htmlFor="username">Nome de usuário</label>
                 <input type="text" placeholder="Insira um nome de usuário" required onChange={(e) => setUsername(e.target.value)}/>
                 <label htmlFor="birthdate">Data de nascimento</label>

@@ -29,13 +29,13 @@ def registar_usuarios():
         dados = request.get_json()
         email = dados['email']
         username = dados['username']
-        birthdate = dados['birthdate']
+        data = dados['birthdate']
         password = dados['password']
 
         mydb = get_connection()
         print(dados)
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO usuarios (email, username, birthdate, password) VALUES (%s, %s, %s, %s)", (email, username, birthdate, password))
+        cursor.execute("INSERT INTO usuarios (email, username, data, password) VALUES (%s, %s, %s, %s)", (email, username, data, password))
         mydb.commit()
         mydb.close()
 
@@ -49,6 +49,27 @@ def registar_usuarios():
             cursor.close()
         if mydb and mydb.is_connected():
             mydb.close()    
+
+@app.route('/usuarios', methods=['GET']) 
+def listar_usuarios():
+    mydb = get_connection()
+    if mydb is None:
+        return jsonify({"error": "erro ao conectar"}), 500
+
+    try:
+        cursor = mydb.cursor(dictionary=True)
+        cursor.execute("SELECT email, username FROM usuarios")
+        usuarios = cursor.fetchall()
+        return jsonify(usuarios)
+
+    except mysql.connector.Error as Error:
+        print(f"Erro ao listar usuários: {Error}")
+        return jsonify({"error": "erro ao listar usuários"}), 500
+    finally:
+        if cursor in locals():
+            cursor.close()
+        if mydb and mydb.is_connected():
+            mydb.close()
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
