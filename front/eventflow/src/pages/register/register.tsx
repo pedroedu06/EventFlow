@@ -94,6 +94,7 @@ const Register: React.FC = () => {
         <nav className="navbar-register">
         <img src="" alt="logo do site" className="logo-register"/>
         <span className="back-button" onClick={backToHome}><SlArrowLeft /> VOLTAR </span>
+        <a href="/login" className="login-button">Login</a>
         </nav>
     <div className="register-container">
             <form className="register-form" onSubmit={handleSubmit}>

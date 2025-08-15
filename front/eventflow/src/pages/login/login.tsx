@@ -39,6 +39,7 @@ const Login: React.FC = () => {
             <nav className="navbar-register">
                     <img src="" alt="logo do site" className="logo-register"/>
                     <span onClick={backToHome} className="back-button"><SlArrowLeft /> VOLTAR </span>
+                    <a href="/register" className="register-button">Registrar</a>
             </nav>
         <div className="login-container">
             <div className="loginConteiner-Form">

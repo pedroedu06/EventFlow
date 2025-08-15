@@ -64,3 +64,9 @@
 .abasdeesqueceuecriar a {
     color: white;
 }
+
+.navbar-register .register-button {
+    position: relative;
+    left: 1560px;
+    top: 20px;
+}

@@ -18,6 +18,7 @@ const Home: React.FC = () => {
                 <ul className="nav-buttons">
                     <li><a href="/">Home</a></li>
                     <li><a href="/eventos">Eventos</a></li>
+                    <li><a href="/dashbordEvent">Dashboard</a></li>
                 </ul>
                 <ul className="login-buttons">
                     <li><a href="/login" className="login-button">Login</a></li>

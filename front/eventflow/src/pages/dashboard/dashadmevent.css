@@ -1,0 +1,74 @@
+.janelaModal {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modalContainer {
+    width: 500px;
+    height: 530px;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff77;
+    backdrop-filter: blur(5px);
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.modalContainer input {
+    width: 475px;
+    height: 30px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modalContainer textarea {
+    width: 100%;
+    height: 140px;
+    border-radius: 5px;
+    resize: none;
+}
+
+.modalContainer select {
+    width: 100px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.submitBtn {
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 140px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.fechar {
+    width: 30px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+    top: -50px;
+    right: -520px;
+    border-radius: 5px;
+}
+
+.janelaModal.active {
+    display: flex;
+}

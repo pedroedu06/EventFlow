@@ -5,6 +5,13 @@
     height: 90vh;
 }
 
+.navbar-register .login-button {
+    position: relative;
+    left: 1570px;
+    top: 20px;
+}
+
+
 .navbar-register {
     height: 70px;
     background-color: #4F46E5;
