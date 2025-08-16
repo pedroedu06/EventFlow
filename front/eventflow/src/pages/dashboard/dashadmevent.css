@@ -1,3 +1,105 @@
+.navDashbord {
+    background-color: #c3c6c9;
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.BacktoHome{
+    margin-right: 100px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.contentDashbord {
+    
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #afafaf;
+    max-width: 100%;
+    margin-top: 20px;
+    border-radius: 20px;
+    height: 820px;
+}
+
+.componentsAddEvent {
+   display: flex;
+}
+
+.contentDashbord .SearchEvent {
+    height: 30px;
+    width: 300px;
+    margin-top: 15px;
+    margin-left: 250px;
+    margin-right: 250px;
+    border-radius: 10px;
+    border: none;
+}
+
+.contentDashbord .AddEvent {
+    width: 150px;
+    height: 40px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.AddEvent:hover {
+    background-color: #d1cfcf;
+}
+
+.seeEvents {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 1700px;
+    max-height: 100%;
+}
+
+.EventComponent {
+    padding: 5px;
+    background-color: #dfd9d9;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detalsBtns {
+    display: flex;
+    gap: 10px;
+}
+
+.detalsBtns h2 {
+    margin-right: 10px;
+}
+
+.detalsBtns button {
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.DestaqueEvent:hover {
+    background-color: yellow;
+}
+
+.DestaqueEvent.activeClick {
+    background-color: yellow;
+}
+
+.DeleteEvent:hover{
+    background-color: red;
+}
+
+.EditEvent:hover {
+    background-color: #3498db;
+}
+
 .janelaModal {
     width: 100vw;
     height: 100vh;
@@ -10,6 +112,8 @@
     justify-content: center;
     z-index: 999;
 }
+
+
 
 .modalContainer {
     width: 500px;

@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { BsPencilSquare } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import axios from 'axios'
 
 
@@ -20,26 +21,89 @@ const DashbordEvent: React.FC = () => {
             }
         });
     }
+
+    const destaqueEventEfect = () => {
+        const destaqueEfect = document.querySelectorAll(".DestaqueEvent");
+
+        destaqueEfect.forEach((el) => {
+            el.addEventListener("click", (e:Event) =>{
+                (e.target as HTMLElement).classList.toggle("activeClick")
+            })
+        })
+    }
+
+    const deletElement = () => {
+        const deletElement = document.querySelectorAll(".DeleteEvent")
+
+        deletElement.forEach((el) => {
+            el.addEventListener("click", (e:Event) => {
+                const parent = (e.currentTarget as HTMLElement).closest(".EventComponent");
+                parent?.remove();
+            })
+        })
+    }
+
+
+    
     
      return (
         <div className="body">
             
             <nav className="navDashbord">
+                <a href="/" className="BacktoHome"><MdOutlineArrowBackIos /> Voltar para Home</a>
                 <img src="" alt="Dashboard" />
-                <a href="/">Voltar para Home</a>
             </nav>
             <div className="contentDashbord">
                 <div className="componentsAddEvent">
                     <h2>Eventos</h2>
+                    <input type="text" placeholder="Search" className="SearchEvent" />
                     <button className="AddEvent" onClick={openModal}>Adicionar Evento</button>
                 </div>
                 <div className="seeEvents">
                     <div className="EventComponent">
                         <h2>"nome do evento"</h2>
-                        <button className="Detalhes"><FaInfoCircle /></button>
-                        <button className="EditEvent"><BsPencilSquare /></button>
-                        <button className="DeleteEvent"><FaTrash /></button>
-                        <button className="DestaqueEvent"><FaStar/></button>
+                        <div className="detalsBtns">
+                            <button className="Detalhes"><FaInfoCircle /></button>
+                            <button className="EditEvent"><BsPencilSquare /></button>
+                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                            <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar/></button>
+                        </div>
+                    </div>
+                    <div className="EventComponent">
+                        <h2>"nome do evento"</h2>
+                        <div className="detalsBtns">
+                            <button className="Detalhes"><FaInfoCircle /></button>
+                            <button className="EditEvent"><BsPencilSquare /></button>
+                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                            <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar/></button>
+                        </div>
+                    </div>
+                    <div className="EventComponent">
+                        <h2>"nome do evento"</h2>
+                        <div className="detalsBtns">
+                            <button className="Detalhes"><FaInfoCircle /></button>
+                            <button className="EditEvent"><BsPencilSquare /></button>
+                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                            <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar/></button>
+                        </div>
+                    </div>
+                    <div className="EventComponent">
+                        <h2>"nome do evento"</h2>
+                        <div className="detalsBtns">
+                            <button className="Detalhes"><FaInfoCircle /></button>
+                            <button className="EditEvent"><BsPencilSquare /></button>
+                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                            <button className="DestaqueEvent" onClick={destaqueEventEfect} ><FaStar/></button>
+                        </div>
+                    </div>
+                    <div className="EventComponent">
+                        <h2>"nome do evento"</h2>
+                        <div className="detalsBtns">
+                            <button className="Detalhes"><FaInfoCircle /></button>
+                            <button className="EditEvent"><BsPencilSquare /></button>
+                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                            <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar/></button>
+                        </div>
                     </div>
                 </div>
             </div>
