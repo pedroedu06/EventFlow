@@ -53,6 +53,26 @@ const DashbordEvent: React.FC = () => {
         })
     }
 
+    const handleSubmit = (e: React.FormEvent) => {
+            e.preventDefault()
+            console.log( optionValue)
+
+            axios.post("http://localhost:5000/registroevento", {
+                name,
+                dataInicio,
+                dataFim,
+                local,
+                description,
+                optionValue
+            })
+            .then(response => {
+                console.log("evento registrado com sucesso", response)
+            })
+            .catch(error => {
+                console.log("evento nao registrado pae", error)
+            })
+        }
+
      return (
         <div className="body">
             
@@ -115,16 +135,16 @@ const DashbordEvent: React.FC = () => {
                 </div>
             </div>
 
-            <div className="janelaModal">
+            <div className="janelaModal" onSubmit={handleSubmit}>
             <div className="modalContainer">
                 <button className="fechar">X</button>
                     <form className="AdicionarEvento">
-                        <input type="text" placeholder="Nome do Evento" onChange={(e:any) => setName(e.target.value)}/>
-                        <input type="date" className="dataEvent" onChange={(e:any) => setdataInicio(e.target.value)}/>
-                        <input type="date" className="dataEvent" onChange={(e:any) => setdataFim(e.target.value)}/>
-                        <input type="text" placeholder="Local do Evento" onChange={(e:any) => setLocal(e.target.value)}/>
-                        <textarea placeholder="Descrição do Evento" className="descricaoEvento" onChange={(e:any) => setDescription(e.target.value)}></textarea>
-                        <select value={optionValue} onChange={handleChange}>
+                        <input type="text" placeholder="Nome do Evento" onChange={(e:any) => setName(e.target.value)} required/>
+                        <input type="date" className="dataEvent" onChange={(e:any) => setdataInicio(e.target.value)} required/>
+                        <input type="date" className="dataEvent" onChange={(e:any) => setdataFim(e.target.value)} required/>
+                        <input type="text" placeholder="Local do Evento" onChange={(e:any) => setLocal(e.target.value)} required/>
+                        <textarea maxLength={1000} placeholder="Descrição do Evento" className="descricaoEvento" onChange={(e:any) => setDescription(e.target.value)} required></textarea>
+                        <select value={optionValue} onChange={handleChange} required>
                             <option value="Show">Show</option>
                             <option value="Feira">Feira</option>
                             <option value="Workshop">Workshop</option>

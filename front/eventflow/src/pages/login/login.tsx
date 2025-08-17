@@ -30,6 +30,7 @@ const Login: React.FC = () => {
             setError("Usuario ou Email nao encontrado, Crie uma conta")
         })       
     }
+    
     const backToHome = () => {
         window.location.href = "/";
     }
