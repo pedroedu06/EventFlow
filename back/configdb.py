@@ -34,7 +34,6 @@ def registar_usuarios():
         password = dados['password']
 
         mydb = get_connection()
-        print(dados)
         cursor = mydb.cursor()
         cursor.execute("INSERT INTO usuarios (email, username, data, password) VALUES (%s, %s, %s, %s)", (email, username, data, password))
         mydb.commit()
