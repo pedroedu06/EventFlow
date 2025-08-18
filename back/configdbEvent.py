@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 from flask_cors import CORS
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
 CORS(app);
@@ -53,6 +54,24 @@ def criarEvento():
         if mydb and mydb.is_connected():
             mydb.close()
 
+
+UPLOAD_FOLDER = "uploads";
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/upload', methods=['POST'])
+def uploadFiles():
+    if 'file' not in request.files:
+        return jsonify({'Error': 'nao tem arquivos'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'Nome de arquivo vazio'}), 400
+    
+
+    save_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(save_path)
+
+    return jsonify({'mensage': f'Arquivo salvo com sucesso!'})
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True);

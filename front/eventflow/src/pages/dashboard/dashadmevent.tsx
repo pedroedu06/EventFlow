@@ -15,10 +15,17 @@ const DashbordEvent: React.FC = () => {
     const [local, setLocal] = useState("");
     const [description, setDescription] = useState("");
     const [optionValue, setOptionValue] = useState("");
+    const [file, setFile] = useState<File | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) =>{
         setOptionValue(e.target.value)
     }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+        setFile(e.target.files[0]);
+    }
+};
 
     // abertura e fechamento de modal
     const openModal: any = () =>{
@@ -55,7 +62,6 @@ const DashbordEvent: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
-            console.log( optionValue)
 
             axios.post("http://localhost:5000/registroevento", {
                 name,
@@ -71,6 +77,28 @@ const DashbordEvent: React.FC = () => {
             .catch(error => {
                 console.log("evento nao registrado pae", error)
             })
+
+            if (!file) {
+                console.log("sem arquivo");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file)
+
+            
+            axios.post("http://localhost:5000/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                    }
+                })
+                .then(response => {
+                    console.log('foi mano', response);
+                })
+                .catch(error => {
+                    console.log("erro ao colocar o arquivo", error)
+                })
+
         }
 
      return (
@@ -150,7 +178,7 @@ const DashbordEvent: React.FC = () => {
                             <option value="Workshop">Workshop</option>
                             <option value="Congresso">Congresso</option>
                         </select>
-                        <input type="file" placeholder="foto destaque" />
+                        <input type="file" placeholder="foto destaque" onChange={handleFileChange}/>
                         <button type="submit" className="submitBtn">Adicionar</button>
                     </form>
                     </div>
