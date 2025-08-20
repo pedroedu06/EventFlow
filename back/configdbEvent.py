@@ -3,9 +3,21 @@ from mysql.connector import Error
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 import os
+from datetime import datetime, time, timedelta
+from flask.json.provider import DefaultJSONProvider
 
 app = Flask(__name__)
 CORS(app);
+
+class CustomJSONEncoder(DefaultJSONProvider):
+    def default(self, obj):
+        if isinstance(obj, (datetime, time)):
+            return obj.isoformat()
+        if isinstance(obj, timedelta):
+            return str(obj)
+        return super().default(obj)   
+
+app.json = CustomJSONEncoder(app);
 
 def get_dbConnection():
     try:
@@ -87,7 +99,7 @@ def getEventos():
 
     cursor.execute(quary)
 
-    eventos = cursor.fetchone()
+    eventos = cursor.fetchall()
     return jsonify(eventos)
     
   
