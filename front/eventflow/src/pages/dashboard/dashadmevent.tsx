@@ -7,11 +7,11 @@ import { FaInfoCircle } from "react-icons/fa";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import axios from 'axios'
 
-
 const DashbordEvent: React.FC = () => {
     const [name, setName] = useState("");
     const [dataInicio, setdataInicio] = useState("");
     const [dataFim, setdataFim] = useState("");
+    const [horarioEvent, setDatatime] = useState("");
     const [local, setLocal] = useState("");
     const [description, setDescription] = useState("");
     const [optionValue, setOptionValue] = useState("");
@@ -26,6 +26,8 @@ const DashbordEvent: React.FC = () => {
         setFile(e.target.files[0]);
     }
 };
+
+    //axios.get("http://localhost:5000/getEvents")
 
     // abertura e fechamento de modal
     const openModal: any = () =>{
@@ -62,11 +64,12 @@ const DashbordEvent: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
-
+            console.log(optionValue)
             axios.post("http://localhost:5000/registroevento", {
                 name,
                 dataInicio,
                 dataFim,
+                horarioEvent,
                 local,
                 description,
                 optionValue
@@ -77,6 +80,8 @@ const DashbordEvent: React.FC = () => {
             .catch(error => {
                 console.log("evento nao registrado pae", error)
             })
+
+           
 
             if (!file) {
                 console.log("sem arquivo");
@@ -168,11 +173,20 @@ const DashbordEvent: React.FC = () => {
                 <button className="fechar">X</button>
                     <form className="AdicionarEvento">
                         <input type="text" placeholder="Nome do Evento" onChange={(e:any) => setName(e.target.value)} required/>
-                        <input type="date" className="dataEvent" onChange={(e:any) => setdataInicio(e.target.value)} required/>
-                        <input type="date" className="dataEvent" onChange={(e:any) => setdataFim(e.target.value)} required/>
+                        <div className="date">
+                            <label htmlFor="date">Data Inicio: </label>
+                            <input type="date" className="dataEvent" onChange={(e:any) => setdataInicio(e.target.value)} required/>
+                            <label htmlFor="date">Data Fim: </label>
+                            <input type="date" className="dataEvent" onChange={(e:any) => setdataFim(e.target.value)} required/>
+                        </div>
+                        <div className="dateTime">
+                            <label htmlFor="time">Horario: </label>
+                            <input type="time" className="horarioEvent" placeholder="Horario de Inicio" onChange={(e:any) => setDatatime(e.target.value)} />
+                        </div>
                         <input type="text" placeholder="Local do Evento" onChange={(e:any) => setLocal(e.target.value)} required/>
                         <textarea maxLength={1000} placeholder="Descrição do Evento" className="descricaoEvento" onChange={(e:any) => setDescription(e.target.value)} required></textarea>
                         <select value={optionValue} onChange={handleChange} required>
+                            <option value="">Selecione uma opção</option>
                             <option value="Show">Show</option>
                             <option value="Feira">Feira</option>
                             <option value="Workshop">Workshop</option>

@@ -33,13 +33,14 @@ def criarEvento():
         nome = dados['name']
         dataInicio = dados['dataInicio']    
         dataFim = dados['dataFim']
+        horarioEvent = dados['horarioEvent']
         local = dados['local']
         description = dados['description']
         optionValue = dados['optionValue']
 
         mydb = get_dbConnection()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO eventos (nome, dataInicio, dataFinal, local, description, role) VALUES (%s, %s, %s, %s, %s, %s)", (nome, dataInicio, dataFim, local, description, optionValue))
+        cursor.execute("INSERT INTO eventos (nome, dataInicio, dataFinal, horario, local, description, role) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))
         mydb.commit()
         mydb.close()
 
@@ -73,5 +74,22 @@ def uploadFiles():
 
     return jsonify({'mensage': f'Arquivo salvo com sucesso!'})
 
+
+@app.route('/getEvents', methods=['GET'])
+def getEventos():
+    mydb = get_dbConnection()
+    if mydb is None:
+        return jsonify({'Error': "nao conectou ao banco"}), 500
+    
+    cursor = mydb.cursor(dictionary=True)
+
+    quary = ("SELECT * FROM eventos")
+
+    cursor.execute(quary)
+
+    eventos = cursor.fetchone()
+    return jsonify(eventos)
+    
+  
 if __name__ == "__main__":
     app.run(port=5000, debug=True);
