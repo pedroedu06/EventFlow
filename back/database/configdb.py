@@ -220,5 +220,21 @@ def getEvent_MIN():
     return jsonify(eventos);
 
 
+
+@app.route('/deleteEvent/<int:evento_id>', methods=['DELETE'])
+def deleteEvent(evento_id):
+    conn = get_dbConnection()
+    cursor = conn.cursor()
+
+    quary = "DELETE FROM eventos WHERE id = %s"
+    cursor.execute(quary, (evento_id,))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({"mensagem": f"evento deletado com sucesso"})
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

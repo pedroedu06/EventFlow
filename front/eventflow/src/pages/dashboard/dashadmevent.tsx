@@ -43,6 +43,10 @@ const DashbordEvent: React.FC<Evento> = () => {
         }
     };
 
+    const handleDelete = (id: number) => {
+        setEvento(prev => prev.filter(e => e.id !== id))
+    }
+
     // abertura e fechamento de modal
     const openModal: any = () => {
         const modal: any = document.querySelector(".janelaModal");
@@ -115,7 +119,7 @@ const DashbordEvent: React.FC<Evento> = () => {
                 </div>
                 <div className="seeEvents">
                     {evento.map((evento => (
-                        <EventComponent key={evento.id} {...evento} />
+                        <EventComponent key={evento.id} {...evento} onDelete={handleDelete}/>
                     )))}
                 </div>
             </div>
