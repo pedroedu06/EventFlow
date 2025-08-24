@@ -219,8 +219,6 @@ def getEvent_MIN():
 
     return jsonify(eventos);
 
-
-
 @app.route('/deleteEvent/<int:evento_id>', methods=['DELETE'])
 def deleteEvent(evento_id):
     conn = get_dbConnection()
@@ -234,6 +232,38 @@ def deleteEvent(evento_id):
     conn.close()
 
     return jsonify({"mensagem": f"evento deletado com sucesso"})
+
+@app.route('/admEdit/<int:evento_id>', methods=['PUT'])
+def editEvent(evento_id):
+
+    try:
+        dados = request.get_json()
+        nome = dados['name']
+        dataInicio = dados['dataInicio']    
+        dataFim = dados['dataFim']
+        horarioEvent = dados['horarioEvent']
+        local = dados['local']
+        description = dados['description']
+        optionValue = dados['optionValue']
+
+        conn = get_dbConnection()
+        cursor = conn.cursor()
+
+        quary= """
+            UPDATE eventos
+            SET nome = %s, dataInicio = %s, dataFinal = %s, horario = %s, local = %s, description = %s, role = %s
+            WHERE id = &s
+        """
+        
+        cursor.execute(quary, (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"Sucesso": f"Evento atualizado com sucesso: {evento_id}"}), 400
+    except Exception as e: 
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
