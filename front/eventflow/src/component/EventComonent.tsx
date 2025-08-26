@@ -6,15 +6,16 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../pages/dashboard/dashadmevent.css"
+//import openModalEdit from '../pages/dashboard/dashadmevent'
 
-interface Evento {
+interface EventoProp {
     id: number;
     nome: string;
     onDelete: (id: number) => void
 }
 
-const EventComponent: React.FC<Evento> = ({id, nome, onDelete}) => {
-    const [event, setEvent] = useState<Evento[]>([]);
+const EventComponent: React.FC<EventoProp> = ({ id, nome, onDelete }) => {
+    const [event, setEvent] = useState<EventoProp[]>([]);
 
     useEffect(() => {
         axios.get("http://localhost:5000/getEvent_MIN")
@@ -37,31 +38,32 @@ const EventComponent: React.FC<Evento> = ({id, nome, onDelete}) => {
     }
     const deletElement = () => {
         axios.delete(`http://localhost:5000/deleteEvent/${id}`)
-        .then(res => {
-            onDelete(id);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            .then(res => {
+                onDelete(id);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
-        return (
-            <div>
-                {event.map(event => (
-                    <div key={event.id} className="EventComponent">
-                        <h2>{event.nome}</h2>
-                        <div className="detalsBtns">
-                            <button className="Detalhes"><FaInfoCircle /></button>
-                            <button className="EditEvent"><BsPencilSquare /></button>
-                            <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
-                            <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar /></button>
-                        </div>
+
+    return (
+        <div>
+            {event.map(event => (
+                <div key={event.id} className="EventComponent">
+                    <h2>{event.nome}</h2>
+                    <div className="detalsBtns">
+                        <button className="Detalhes"><FaInfoCircle /></button>
+                        <button className="EditEvent"><BsPencilSquare /></button>
+                        <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
+                        <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar /></button>
                     </div>
+                </div>
 
-                ))}
-            </div>
-        )
-    }
+            ))}
+        </div>
+    )
+}
 
 
 
-    export default EventComponent;
+export default EventComponent;

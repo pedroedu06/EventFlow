@@ -75,7 +75,6 @@ def listar_usuarios():
         if mydb and mydb.is_connected():
             mydb.close()
 
-
 @app.route("/login", methods=["POST"])
 def login():
 
@@ -191,20 +190,23 @@ def uploadFiles():
     return jsonify({'mensage': f'Arquivo salvo com sucesso!'})
 
 
-@app.route('/getEvents', methods=['GET'])
-def getEventos():
+@app.route('/getEvents<int:event_id>', methods=['GET'])
+def getEventos(event_id):
     mydb = get_dbConnection()
     if mydb is None:
         return jsonify({'Error': "nao conectou ao banco"}), 500
     
     cursor = mydb.cursor(dictionary=True)
 
-    quary = ("SELECT * FROM eventos")
+    quary = ("SELECT * FROM eventos WHERE id = %s")
 
-    cursor.execute(quary)
+    cursor.execute(quary, ((event_id)))
 
-    eventos = cursor.fetchall()
-    return jsonify(eventos)
+    mydb.commit()
+    cursor.close()
+    mydb.close()
+
+    return jsonify({"evento listado com sucesso": {event_id}})
 
 @app.route('/getEvent_MIN', methods=['GET'])
 def getEvent_MIN():
@@ -252,7 +254,7 @@ def editEvent(evento_id):
         quary= """
             UPDATE eventos
             SET nome = %s, dataInicio = %s, dataFinal = %s, horario = %s, local = %s, description = %s, role = %s
-            WHERE id = &s
+            WHERE id = %s
         """
         
         cursor.execute(quary, (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))

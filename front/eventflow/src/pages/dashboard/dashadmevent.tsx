@@ -29,8 +29,8 @@ const DashbordEvent: React.FC<Evento> = () => {
 
     useEffect(() => {
         axios.get("http://localhost:5000/getEvent_MIN")
-        .then(res => setEvento(res.data))
-        .catch(error => console.log("error: ", error))
+            .then(res => setEvento(res.data))
+            .catch(error => console.log("error: ", error))
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,6 +58,8 @@ const DashbordEvent: React.FC<Evento> = () => {
             }
         });
     }
+
+    
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -119,7 +121,7 @@ const DashbordEvent: React.FC<Evento> = () => {
                 </div>
                 <div className="seeEvents">
                     {evento.map((evento => (
-                        <EventComponent key={evento.id} {...evento} onDelete={handleDelete}/>
+                        <EventComponent key={evento.id} {...evento} onDelete={handleDelete} />
                     )))}
                 </div>
             </div>
@@ -153,27 +155,6 @@ const DashbordEvent: React.FC<Evento> = () => {
                     </form>
                 </div>
             </div>
-
-            <div className="janelaModal">
-                <div className="modalContainer">
-                    <button className="fechar">X</button>
-                    <form className="EditarEvento">
-                        <input type="text" placeholder="Nome do Evento" />
-                        <input type="date" className="dataEvent" />
-                        <input type="date" className="dataEvent" />
-                        <input type="text" placeholder="Local do Evento" />
-                        <textarea placeholder="Descrição do Evento" className="descricaoEvento"></textarea>
-                        <select name="">
-                            <option value="Show">Show</option>
-                            <option value="Feira">Feira</option>
-                            <option value="Workshop">Workshop</option>
-                            <option value="Congresso">Congresso</option>
-                        </select>
-                        <button type="submit" className="submitBtn">Adicionar</button>
-                    </form>
-                </div>
-            </div>
-
         </div>
     )
 }
