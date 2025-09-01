@@ -13,6 +13,7 @@ type Evento = {
     nome: string;
     dataInicio: string;
     dataFinal: string;
+    horarioEvent: string;
     local: string;
     description: string;
     optionValue: string;
@@ -26,6 +27,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
     const [name, setNome] = useState('');
     const [dataInicio, setdataInicio] = useState('');
     const [dataFim, setdataFim] = useState('');
+    const [dataTime, setDatatime] = useState('')
     const [local, setLocal] = useState('');
     const [description, setDescription] = useState('');
     const [optionValue, setOptionValue] = useState("");
@@ -89,6 +91,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
             name: name || selectEvent.nome,
             dataInicio: dataInicio || selectEvent.dataInicio,
             dataFim: dataFim || selectEvent.dataFinal,
+            horarioEvent: dataTime || selectEvent.horarioEvent,
             local: local || selectEvent.local,
             description: description || selectEvent.description,
             optionValue: optionValue || selectEvent.optionValue
@@ -122,16 +125,23 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
             </div>
 
 
-        {openModal && (       
-            <div className="janelaModalEdit">
+            {openModal && (
                 <div className="janelaModal">
                     <div className="modalContainer">
                         <button className="fechar" onClick={closeModal}>X</button>
                         <form className="EditarEvento" onSubmit={handleSubmitEdit}>
                             <h2>Editar Evento</h2>
                             <input type="text" value={name || selectEvent?.nome || ""} onChange={(e: any) => setNome(e.target.value)} />
-                            <input type="date" className="dataEvent" value={dataInicio || selectEvent?.dataInicio || ""} onChange={(e: any) => setdataInicio(e.target.value)} />
-                            <input type="date" className="dataEvent" value={dataFim || selectEvent?.dataFinal || ""} onChange={(e: any) => setdataFim(e.target.value)} />
+                            <div className="date">
+                                <label htmlFor="date">Data Inicio: </label>
+                                <input type="date" className="dataEvent" onChange={(e: any) => setdataInicio(e.target.value)} />
+                                <label htmlFor="date">Data Fim: </label>
+                                <input type="date" className="dataEvent" onChange={(e: any) => setdataFim(e.target.value)} />
+                            </div>
+                            <div className="dateTime">
+                                <label htmlFor="time">Horario: </label>
+                                <input type="time" className="horarioEvent" value={dataTime || selectEvent?.horarioEvent || ""} onChange={(e: any) => setDatatime(e.target.value)} />
+                            </div>
                             <input type="text" placeholder="Local do Evento" value={local || selectEvent?.local || ""} onChange={(e: any) => setLocal(e.target.value)} />
                             <textarea placeholder="Descrição do Evento" value={description || selectEvent?.description || ""} className="descricaoEvento" onChange={(e: any) => setDescription(e.target.value)}></textarea>
                             <select value={optionValue || selectEvent?.optionValue || ""} onChange={handleChange}>
@@ -141,12 +151,11 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
                                 <option value="Workshop">Workshop</option>
                                 <option value="Congresso">Congresso</option>
                             </select>
-                            <button type="submit" className="submitBtn">Adicionar</button>
+                            <button type="submit" className="submitBtn">Editar Evento</button>
                         </form>
                     </div>
                 </div>
-            </div>
-        )}
+            )}
 
         </div>
     )
