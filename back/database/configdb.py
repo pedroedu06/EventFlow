@@ -243,21 +243,22 @@ def editEvent(evento_id):
         nome = dados['name']
         dataInicio = dados['dataInicio']    
         dataFim = dados['dataFim']
-        horarioEvent = dados['horarioEvent']
+        #horarioEvent = dados['horarioEvent']
         local = dados['local']
         description = dados['description']
         optionValue = dados['optionValue']
+        print(dados)
 
         conn = get_dbConnection()
         cursor = conn.cursor()
 
         quary= """
             UPDATE eventos
-            SET nome = %s, dataInicio = %s, dataFinal = %s, horario = %s, local = %s, description = %s, role = %s
+            SET nome = %s, dataInicio = %s, dataFinal = %s, local = %s, description = %s, role = %s
             WHERE id = %s
         """
         
-        cursor.execute(quary, (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))
+        cursor.execute(quary, (nome, dataInicio, dataFim, local, description, optionValue, evento_id))
         conn.commit()
 
         cursor.close()

@@ -4,16 +4,19 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import axios from 'axios'
 import EventComponent from "../../component/EventComonent";
 
-interface Evento {
+type Evento = {
     id: number;
     nome: string;
     dataInicio: string;
-    dataFim: string;
+    dataFinal: string;
     horarioEvent: string;
     local: string;
     description: string;
     optionValue: string;
+    onDelete: (id: number) => void
 }
+
+
 
 const DashbordEvent: React.FC<Evento> = () => {
     const [evento, setEvento] = useState<Evento[]>([]);
@@ -26,6 +29,7 @@ const DashbordEvent: React.FC<Evento> = () => {
     const [description, setDescription] = useState("");
     const [optionValue, setOptionValue] = useState("");
     const [file, setFile] = useState<File | null>(null);
+    const [modal, setOpenModal] = useState(false)
 
     useEffect(() => {
         axios.get("http://localhost:5000/getEvent_MIN")
@@ -48,18 +52,10 @@ const DashbordEvent: React.FC<Evento> = () => {
     }
 
     // abertura e fechamento de modal
-    const openModal: any = () => {
-        const modal: any = document.querySelector(".janelaModal");
-        modal?.classList.add("active");
+    const openModal = () => setOpenModal(true)
+    const closeModal = () => setOpenModal(false)
 
-        modal.addEventListener("click", (e: any) => {
-            if (e.target.classList.contains("janelaModal") || e.target.classList.contains("fechar")) {
-                modal.classList.remove("active");
-            }
-        });
-    }
 
-    
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -104,6 +100,7 @@ const DashbordEvent: React.FC<Evento> = () => {
                 console.log("erro ao colocar o arquivo", error)
             })
 
+        closeModal();    
     }
 
     return (
@@ -120,15 +117,15 @@ const DashbordEvent: React.FC<Evento> = () => {
                     <button className="AddEvent" onClick={openModal}>Adicionar Evento</button>
                 </div>
                 <div className="seeEvents">
-                    {evento.map((evento => (
-                        <EventComponent key={evento.id} {...evento} onDelete={handleDelete} />
+                    {evento.map((Evento => (
+                        <EventComponent key={Evento.id} {...Evento} onDelete={handleDelete} />
                     )))}
                 </div>
             </div>
-
+        {modal && (           
             <div className="janelaModal" onSubmit={handleSubmit}>
                 <div className="modalContainer">
-                    <button className="fechar">X</button>
+                    <button className="fechar" onClick={closeModal}>X</button>
                     <form className="AdicionarEvento">
                         <input type="text" placeholder="Nome do Evento" onChange={(e: any) => setName(e.target.value)} required />
                         <div className="date">
@@ -155,6 +152,7 @@ const DashbordEvent: React.FC<Evento> = () => {
                     </form>
                 </div>
             </div>
+        )}
         </div>
     )
 }
