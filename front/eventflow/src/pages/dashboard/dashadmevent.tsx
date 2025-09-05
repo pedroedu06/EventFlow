@@ -12,7 +12,7 @@ type Evento = {
     horarioEvent: string;
     local: string;
     description: string;
-    optionValue: string;
+    role: string;
     onDelete: (id: number) => void
 }
 
@@ -123,10 +123,10 @@ const DashbordEvent: React.FC<Evento> = () => {
                 </div>
             </div>
         {modal && (           
-            <div className="janelaModal" onSubmit={handleSubmit}>
+            <div className="janelaModal">
                 <div className="modalContainer">
                     <button className="fechar" onClick={closeModal}>X</button>
-                    <form className="AdicionarEvento">
+                    <form className="AdicionarEvento" onSubmit={handleSubmit}>
                         <input type="text" placeholder="Nome do Evento" onChange={(e: any) => setName(e.target.value)} required />
                         <div className="date">
                             <label htmlFor="date">Data Inicio: </label>
@@ -148,7 +148,7 @@ const DashbordEvent: React.FC<Evento> = () => {
                             <option value="Congresso">Congresso</option>
                         </select>
                         <input type="file" placeholder="foto destaque" onChange={handleFileChange} />
-                        <button type="submit" className="submitBtn">Adicionar</button>
+                        <button type="submit" className="submitBtn" >Adicionar</button>
                     </form>
                 </div>
             </div>

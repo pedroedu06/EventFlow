@@ -16,7 +16,7 @@ type Evento = {
     horarioEvent: string;
     local: string;
     description: string;
-    optionValue: string;
+    role: string;
     onDelete: (id: number) => void
 };
 
@@ -27,36 +27,44 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
     const [name, setNome] = useState('');
     const [dataInicio, setdataInicio] = useState('');
     const [dataFim, setdataFim] = useState('');
-    const [dataTime, setDatatime] = useState('')
+    const [dataTime, setDatatime] = useState("");
     const [local, setLocal] = useState('');
     const [description, setDescription] = useState('');
-    const [optionValue, setOptionValue] = useState("");
+    const [optionValue, setOptionValue] = useState(selectEvent?.role || '');
     const [openModal, setModalOpen] = useState(false)
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setOptionValue(e.target.value);
     }
-
+    
     useEffect(() => {
         axios.get("http://localhost:5000/getEvent_MIN")
             .then(response => {
                 setEvent(response.data)
+                
             })
             .catch(error => {
                 console.log('falha ao ter os eventos', error)
             })
     }, []);
 
+    useEffect(() => {
+        if (selectEvent?.horarioEvent) {
+            setDatatime(convertTimeToNormal(selectEvent.horarioEvent));
+        }
+    }, [selectEvent]);
+
     const getEventbyid = async (id: number) => {
         axios.get(`http://localhost:5000/getEvents/${id}`)
             .then(res => {
                 setSelectEvent(res.data)
+                console.log(res.data)
             })
             .catch(error => {
                 console.log(error);
             })
     }
-
+    
 
     const destaqueEventEfect = () => {
         const destaqueEfect = document.querySelectorAll(".DestaqueEvent");
@@ -77,8 +85,9 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
             })
     }
 
-    const handleOpenModal = (Evento: Evento) => {
-        setSelectEvent(Evento);
+  
+    const handleOpenModal = (id: number) => {
+        getEventbyid(id);
         setModalOpen(true)
     }
     const closeModal = () => setModalOpen(false)
@@ -90,12 +99,13 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
         const dadosUpdate = {
             name: name || selectEvent.nome,
             dataInicio: dataInicio || selectEvent.dataInicio,
-            dataFim: dataFim || selectEvent.dataFinal,
+            dataFinal: dataFim || selectEvent.dataFinal,
             horarioEvent: dataTime || selectEvent.horarioEvent,
             local: local || selectEvent.local,
             description: description || selectEvent.description,
-            optionValue: optionValue || selectEvent.optionValue
-        }
+            optionValue: optionValue || selectEvent.role
+        }  
+
 
         axios.put(`http://localhost:5000/admEdit/${selectEvent.id}`, dadosUpdate)
             .then(res => {
@@ -107,6 +117,32 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
             })
     }
 
+    function convertISOToDate(isoStr: string): string {
+        if (!isoStr) return "";
+        const date = new Date(isoStr);
+        const yyyy = date.getUTCFullYear();
+        const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+        const dd = String(date.getUTCDate()).padStart(2, "0");
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function convertTimeToNormal(timeStr: string | null): string {
+        if (!timeStr) return "";
+        // Aceita formatos como "2:02:00" e converte para "02:02"
+        const parts = timeStr.split(":");
+        if (parts.length >= 2) {
+            const hh = parts[0].padStart(2, "0");
+            const mm = parts[1].padStart(2, "0");
+            return `${hh}:${mm}`;
+        }
+        // Se vier em formato ISO, tenta extrair hora e minuto
+        const date = new Date(timeStr);
+        const hh = String(date.getUTCHours()).padStart(2, "0");
+        const mm = String(date.getUTCMinutes()).padStart(2, "0");
+        return `${hh}:${mm}`;
+    }
+
+
     return (
         <div>
             <div>
@@ -115,7 +151,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
                         <h2>{event.nome}</h2>
                         <div className="detalsBtns">
                             <button className="Detalhes"><FaInfoCircle /></button>
-                            <button className="EditEvent" onClick={() => handleOpenModal(event)}><BsPencilSquare /></button>
+                            <button className="EditEvent" onClick={() => handleOpenModal(event.id)}><BsPencilSquare /></button>
                             <button className="DeleteEvent" onClick={deletElement}><FaTrash /></button>
                             <button className="DestaqueEvent" onClick={destaqueEventEfect}><FaStar /></button>
                         </div>
@@ -134,17 +170,17 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
                             <input type="text" value={name || selectEvent?.nome || ""} onChange={(e: any) => setNome(e.target.value)} />
                             <div className="date">
                                 <label htmlFor="date">Data Inicio: </label>
-                                <input type="date" className="dataEvent" onChange={(e: any) => setdataInicio(e.target.value)} />
+                                <input type="date" className="dataEvent" value={dataInicio || convertISOToDate(selectEvent?.dataInicio || "")} onChange={(e: any) => setdataInicio(e.target.value)} />
                                 <label htmlFor="date">Data Fim: </label>
-                                <input type="date" className="dataEvent" onChange={(e: any) => setdataFim(e.target.value)} />
+                                <input type="date" className="dataEvent" value={dataFim || convertISOToDate(selectEvent?.dataFinal || "")} onChange={(e: any) => setdataFim(e.target.value)} />
                             </div>
                             <div className="dateTime">
                                 <label htmlFor="time">Horario: </label>
-                                <input type="time" className="horarioEvent" value={dataTime || selectEvent?.horarioEvent || ""} onChange={(e: any) => setDatatime(e.target.value)} />
+                                <input type="time" className="horarioEvent" value={''} onChange={(e: any) => setDatatime(e.target.value)} />
                             </div>
                             <input type="text" placeholder="Local do Evento" value={local || selectEvent?.local || ""} onChange={(e: any) => setLocal(e.target.value)} />
                             <textarea placeholder="Descrição do Evento" value={description || selectEvent?.description || ""} className="descricaoEvento" onChange={(e: any) => setDescription(e.target.value)}></textarea>
-                            <select value={optionValue || selectEvent?.optionValue || ""} onChange={handleChange}>
+                            <select value={optionValue} onChange={handleChange}>
                                 <option value="">Selecione um tipo</option>
                                 <option value="Show">Show</option>
                                 <option value="Feira">Feira</option>

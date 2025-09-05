@@ -190,7 +190,7 @@ def uploadFiles():
     return jsonify({'mensage': f'Arquivo salvo com sucesso!'})
 
 
-@app.route('/getEvents<int:event_id>', methods=['GET'])
+@app.route('/getEvents/<int:event_id>', methods=['GET'])
 def getEventos(event_id):
     mydb = get_dbConnection()
     if mydb is None:
@@ -200,13 +200,17 @@ def getEventos(event_id):
 
     quary = ("SELECT * FROM eventos WHERE id = %s")
 
-    cursor.execute(quary, ((event_id)))
+    cursor.execute(quary, (event_id,))
+    evento = cursor.fetchone()
 
-    mydb.commit()
     cursor.close()
     mydb.close()
 
-    return jsonify({"evento listado com sucesso": {event_id}})
+    if evento is None:
+        return jsonify({"error": "evento nao encontrado"}), 404
+    else:
+       return jsonify(evento)
+
 
 @app.route('/getEvent_MIN', methods=['GET'])
 def getEvent_MIN():
@@ -242,7 +246,7 @@ def editEvent(evento_id):
         dados = request.get_json()
         nome = dados['name']
         dataInicio = dados['dataInicio']    
-        dataFim = dados['dataFim']
+        dataFim = dados['dataFinal']
         horarioEvent = dados['horarioEvent']
         local = dados['local']
         description = dados['description']
@@ -261,12 +265,14 @@ def editEvent(evento_id):
         cursor.execute(quary, (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue, evento_id))
         conn.commit()
 
-        cursor.close()
-        conn.close()
-
-        return jsonify({"Sucesso": f"Evento atualizado com sucesso: {evento_id}"}), 400
-    except Exception as e: 
+        return jsonify({"Sucesso": f"Evento atualizado com sucesso: {evento_id}"}), 200
+    except Exception as e:
         return jsonify({"error": str(e)}), 500
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals() and conn:
+            conn.close()
 
 
 if __name__ == "__main__":
