@@ -16,8 +16,6 @@ type Evento = {
     onDelete: (id: number) => void
 }
 
-
-
 const DashbordEvent: React.FC<Evento> = () => {
     const [evento, setEvento] = useState<Evento[]>([]);
 

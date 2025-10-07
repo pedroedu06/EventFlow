@@ -50,7 +50,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
 
     useEffect(() => {
         if (selectEvent?.horarioEvent) {
-            setDatatime(convertTimeToNormal(selectEvent.horarioEvent));
+            setDatatime(convertTimeToNormal(selectEvent?.horarioEvent));
         }
     }, [selectEvent]);
 
@@ -75,6 +75,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
             })
         })
     }
+
     const deletElement = () => {
         axios.delete(`http://localhost:5000/deleteEvent/${id}`)
             .then(res => {
@@ -128,20 +129,17 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
 
     function convertTimeToNormal(timeStr: string | null): string {
         if (!timeStr) return "";
-        // Aceita formatos como "2:02:00" e converte para "02:02"
         const parts = timeStr.split(":");
         if (parts.length >= 2) {
             const hh = parts[0].padStart(2, "0");
             const mm = parts[1].padStart(2, "0");
             return `${hh}:${mm}`;
         }
-        // Se vier em formato ISO, tenta extrair hora e minuto
         const date = new Date(timeStr);
         const hh = String(date.getUTCHours()).padStart(2, "0");
         const mm = String(date.getUTCMinutes()).padStart(2, "0");
         return `${hh}:${mm}`;
     }
-
 
     return (
         <div>

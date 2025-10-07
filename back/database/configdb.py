@@ -1,15 +1,18 @@
 import mysql.connector
 from mysql.connector import Error
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 import re
 import os
 from flask.json.provider import DefaultJSONProvider
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
+import jwt
+
+from functools import wraps
 
 
-app = Flask(__name__);
-CORS(app);
+app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
 
 def get_connection():
@@ -18,11 +21,45 @@ def get_connection():
             host="localhost",
             user="root",
             password="",
-            database="registro-de-usuarios"
+            database="EventFlow"
         )
     except mysql.connector.Error as Error:
         print(f"Error ao conectar: {Error}")
         return None
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'troque_por_um_segredo_forte')
+app.config['JWT_ALGORITHM'] = 'HS256'
+app.config['ACCESS_TOKEN_EXPIRES_MINUTES'] = 15
+
+def generateAcessToken(id: int, role: str) -> str:
+    payload = {
+        'sub': id,
+        'role': role,
+        'iat': datetime.now(timezone.utc),
+        'exp': datetime.now(timezone.utc) + timedelta(minutes=app.config['ACCESS_TOKEN_EXPIRES_MINUTES']),
+    }
+
+    token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm=app.config['JWT_ALGORITHM'])
+
+    if isinstance(token, bytes):
+        token = token.decode('utf-8')
+    return token
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.cookies.get('access_token')
+        if not token:
+            return jsonify({'message': 'Token ausente'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=[app.config['JWT_ALGORITHM']])
+            request.user = {'id': data.get('sub'), 'role': data.get('role')}
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token expirado'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'message': 'Token inválido'}), 401
+        return f(*args, **kwargs)
+    return decorated
 
 @app.route('/register', methods=['POST'])
 def registar_usuarios():
@@ -34,12 +71,12 @@ def registar_usuarios():
         dados = request.get_json()
         email = dados['email']
         username = dados['username']
-        data = dados['birthdate']
+        data_nasc = dados['birthdate']
         password = dados['password']
 
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO usuarios (email, username, data, password) VALUES (%s, %s, %s, %s)", (email, username, data, password))
+        cursor.execute("INSERT INTO usuarios (email, username, data_nasc, password) VALUES (%s, %s, %s, %s)", (email, username, data_nasc, password))
         mydb.commit()
         mydb.close()
 
@@ -79,29 +116,27 @@ def listar_usuarios():
 def login():
 
     dados = request.get_json()
-    loginForm = dados['loginForm']
+    print("🧩 Dados recebidos:", dados)
+    login = dados['login']
     password = dados['password']
 
-    isemail = re.match(r"[^@]+@[^@]+\.[^@]+", loginForm) is not None
+    isemail = re.match(r"[^@]+@[^@]+\.[^@]+", login) is not None
 
     try:
         mydb = get_connection()
         cursor = mydb.cursor(dictionary=True)
 
         if isemail:
-            cursor.execute("SELECT * FROM usuarios WHERE email = %s", (loginForm,))
+            cursor.execute("SELECT * FROM usuarios WHERE email = %s", (login,))
         else:
-            cursor.execute("SELECT * FROM usuarios WHERE username = %s", (loginForm,))
+            cursor.execute("SELECT * FROM usuarios WHERE username = %s", (login,))
 
         user = cursor.fetchone()
 
         if not user:
             return jsonify({'error': 'Usuario nao encontrado'}), 404
         if user["password"] != password:
-            return jsonify({"error": 'Senha incorreta'})
-        
-        return jsonify({'message': "login bem sucedido", "user": user})
-    
+            return jsonify({"error": 'Senha incorreta'})    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     finally:
@@ -109,9 +144,43 @@ def login():
             cursor.close()
         if mydb and mydb.is_connected():
             mydb.close()
+    
+    token = generateAcessToken(user['id'], user['role'])
+
+    return jsonify({'token': token, 'role': user['role']})
+
+@app.route('/DashbordEvent', methods=['GET'])
+@token_required
+def protected_admin():
+		user = getattr(request, 'user', None)
+		if not user or user.get('role') != 'admin':
+				return jsonify({'message': 'Acesso negado: admin required'}), 403
+		return jsonify({'message': f"Bem-vindo, admin {user.get('id')}"})
 
 
-# adm dashbord
+@app.route('/logout', methods=['POST'])
+def logout():
+		"""Remove o cookie do access token no cliente."""
+		resp = make_response(jsonify({'message': 'Desconectado'}))
+		resp.set_cookie('access_token', '', expires=0)
+		return resp
+
+
+
+
+
+
+
+"""
+
+
+adm dashboard
+para criar eventos e etc
+
+
+"""
+
+
 
 class CustomJSONEncoder(DefaultJSONProvider):
     def default(self, obj):
@@ -129,7 +198,7 @@ def get_dbConnection():
             host="localhost",
             user="root",
             password="",
-            database="registroeventos"
+            database="EventFlow"
         )
     except mysql.connector.Error as Error:
             print(f"deu certo nao pai", {Error})
@@ -156,7 +225,7 @@ def criarEvento():
 
         mydb = get_dbConnection()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO eventos (nome, dataInicio, dataFinal, horario, local, description, role) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))
+        cursor.execute("INSERT INTO eventos (nome, dataInicio, dataFim, horarioEvent, local, description, role) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue))
         mydb.commit()
         mydb.close()
   
@@ -198,7 +267,7 @@ def getEventos(event_id):
     
     cursor = mydb.cursor(dictionary=True)
 
-    quary = ("SELECT * FROM eventos WHERE id = %s")
+    quary = ("SELECT * FROM eventos WHERE id_eventos = %s")
 
     cursor.execute(quary, (event_id,))
     evento = cursor.fetchone()
@@ -217,7 +286,7 @@ def getEvent_MIN():
     conn = get_dbConnection();
     cursor = conn.cursor(dictionary=True);
 
-    cursor.execute("SELECT id, nome FROM eventos")
+    cursor.execute("SELECT id_eventos, nome FROM eventos")
     eventos = cursor.fetchall()
 
     cursor.close()
@@ -230,7 +299,7 @@ def deleteEvent(evento_id):
     conn = get_dbConnection()
     cursor = conn.cursor()
 
-    quary = "DELETE FROM eventos WHERE id = %s"
+    quary = "DELETE FROM eventos WHERE id_eventos = %s"
     cursor.execute(quary, (evento_id,))
 
     conn.commit()
@@ -258,8 +327,8 @@ def editEvent(evento_id):
 
         quary= """
             UPDATE eventos
-            SET nome = %s, dataInicio = %s, dataFinal = %s, horario = %s, local = %s, description = %s, role = %s
-            WHERE id = %s
+            SET nome = %s, dataInicio = %s, dataFim = %s, horarioEvent = %s, local = %s, description = %s, role = %s
+            WHERE id_eventos = %s
         """
         
         cursor.execute(quary, (nome, dataInicio, dataFim, horarioEvent, local, description, optionValue, evento_id))

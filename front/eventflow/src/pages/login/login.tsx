@@ -2,35 +2,23 @@ import type React from "react";
 import { SlArrowLeft } from "react-icons/sl";
 import { useState } from 'react';
 import "./login.css";
-import axios from "axios";
+import userLogin from "../../hooks/loginFunc";
 
 
 const Login: React.FC = () => {
-    const [loginForm, setLogin] = useState("");
+    const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-        axios.post("http://localhost:5000/login", {
-            loginForm,
-            password
-        })
-        .then(response =>{
-            if (response.data.error){
-                setError(response.data.error)
-            }else {
-                console.log("login confirmado");
-                setError("")
-            }
-        })
-        .catch(error => {
-            console.log("erro ao logar", error)
-            setError("Usuario ou Email nao encontrado, Crie uma conta")
-        })       
+    try {
+        await userLogin(login, password)
+    } catch (err: any) {
+        setError(err.message)
     }
-    
+}
     const backToHome = () => {
         window.location.href = "/";
     }

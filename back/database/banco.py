@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="registro-de-usuarios"
+    database="EventFlow"
 )
 
 if mydb.is_connected():
