@@ -1,0 +1,131 @@
+.register-container { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.navbar-register {
+    height: 70px;
+    background-color: #4F46E5;
+    display: grid;
+    grid-template-columns: auto 1fr auto; 
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: relative; 
+    color: white;
+}
+
+/* left - back button */
+.navbar-register .back-button {
+    justify-self: start;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 8px;
+    border: none;
+    color: inherit;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* center - logo */
+.navbar-register .logo-register {
+    justify-self: center;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    height: 35px;
+}
+
+/* garante que imagens dentro do logo se ajustem */
+.navbar-register .logo-register img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+.login-button {
+    color: black;
+}
+
+/* right - login button */
+.navbar-register .login-button {
+    justify-self: end;
+    cursor: pointer;
+    margin-right: 8px;
+    border: none;
+    color: inherit;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .navbar-register {
+        height: 60px;
+        padding: 0 10px;
+    }
+    .navbar-register .logo-register {
+        height: 40px;
+    }
+    .navbar-register .login-button,
+    .navbar-register .back-button {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+.input-data {
+    width: 100px;
+}
+.register-form {
+    width: 620px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #4F46E5;
+    padding: 60px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.10);
+    color: white;
+}
+
+.register-form input {
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.10);
+    margin-top: 20px;
+}
+
+.register-form input[type="date"] {
+    width: 150px;
+}
+.register-form label {
+    margin-top: 15px;
+    margin-bottom: -25px;
+}
+
+.register-form button {
+    width: 400px;
+    height: 50px;
+    font-weight: 400;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: #7C3AED;
+    color: white;
+    border-radius: 40px;
+    border: none;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.10);
+    cursor: pointer;
+    transition: 1s;
+}
+
+.register-form button:hover {
+    background-color: #8f5be9;
+}
+
+

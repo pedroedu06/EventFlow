@@ -116,7 +116,6 @@ def listar_usuarios():
 def login():
 
     dados = request.get_json()
-    print("🧩 Dados recebidos:", dados)
     login = dados['login']
     password = dados['password']
 

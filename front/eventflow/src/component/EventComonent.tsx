@@ -5,7 +5,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import type React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "../pages/dashboard/dashadmevent.css"
+import "../pages/app/dashboard/dashadmevent.css"
 //import openModalEdit from '../pages/dashboard/dashadmevent'
 
 type Evento = {

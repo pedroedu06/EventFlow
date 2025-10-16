@@ -92,24 +92,21 @@ const Register: React.FC = () => {
    return (
     <div>
         <nav className="navbar-register">
-        <img src="" alt="logo do site" className="logo-register"/>
         <span className="back-button" onClick={backToHome}><SlArrowLeft /> VOLTAR </span>
+        <img src="" alt="logo do site" className="logo-register"/>
         <a href="/login" className="login-button">Login</a>
         </nav>
     <div className="register-container">
             <form className="register-form" onSubmit={handleSubmit}>
+                <h2>Registrar</h2>
                 {errorRegister && <span style={{color: 'red'}}>{errorRegister}</span>}
-                <label htmlFor="email">Email</label>
                 <input type="email" placeholder="Insira um Email" required onChange={(e) => setEmail(e.target.value)}/>
                 {errorEmailAddress && <span style={{color: 'red'}}>{errorEmailAddress}</span>}
-                <label htmlFor="username">Nome de usuário</label>
                 <input type="text" placeholder="Insira um nome de usuário" required onChange={(e) => setUsername(e.target.value)}/>
-                <label htmlFor="birthdate">Data de nascimento</label>
+                <label htmlFor="date">Data de nascimento</label>
                 <input type="date" placeholder="Insira sua data de nascimento" className="input-data" required onChange={(e) => setBirthdate(e.target.value)}/>
                 {erroAge && <span style={{color: 'red'}}>{erroAge}</span>}
-                <label htmlFor="password">Senha</label>
                 <input type="password" placeholder="Insira sua senha" required onChange={(e) => setPassword(e.target.value)}/>
-                <label htmlFor="confirm-password">Confirme a senha</label>
                 <input type="password" placeholder="Confirme a senha" required onChange={(e) => setConfirmPassword(e.target.value)}/>
                 {error && <span style={{ color: 'red' }}>{error}</span>}
                 

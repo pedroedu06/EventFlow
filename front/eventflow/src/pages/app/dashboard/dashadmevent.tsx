@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import "./dashadmevent.css"
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import axios from 'axios'
-import EventComponent from "../../component/EventComonent";
+import EventComponent from "../../../component/EventComonent";
 
 type Evento = {
     id: number;

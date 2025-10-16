@@ -12,8 +12,8 @@
 }
 
 .loginConteiner-Form {
-    width: 450px;
-    height: 250px;
+    width: 510px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -26,7 +26,7 @@
 }
 
 .loginConteiner-Form input {
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 15px;
     width: 400px;
     border-radius: 5px;
@@ -66,8 +66,3 @@
     color: white;
 }
 
-.navbar-register .register-button {
-    position: relative;
-    left: 1560px;
-    top: 20px;
-}

@@ -1,35 +1,53 @@
 /*nav bar da home*/
+body {
+    max-width: 100%;
+    max-height: 100vh;
+}
+
+/* Navbar layout refatorado - mantém estrutura: search (esq), logo (centro), nav abaixo da logo, login (dir) */
 .navbar {
     background-color: #4F46E5;
     color: white;
     width: 100%;
-    height: 100px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto auto;
     align-items: center;
-    font-size: 15px;
-}
-
-.logo {
+    padding: 16px 32px;
+    gap: 8px 24px;
     position: relative;
-    top: -13px;
-    left: 245px;
+    z-index: 10;
+    box-sizing: border-box;
+    min-height: 100px;
 }
 
-.nav-buttons{
+/* logo centralizado na coluna do meio (linha 1) */
+.logo {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    align-self: end;
+    max-width: 160px;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    top: 0;
+}
+
+/* botões de navegação centralizados abaixo da logo (linha 2) */
+.nav-buttons {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: center;
     display: flex;
-    justify-content: space-between;
-    position: absolute;
-    right: 850px;
-    top: 56px;
-    gap: 0px;
+    gap: 12px;
     align-items: center;
     list-style: none;
+    margin: 8px 0 0 0;
+    padding: 0;
 }
 
+/* links de navegação (mantém estilo existente) */
 .nav-buttons a {
     color: #fff;
     text-decoration: none;
@@ -37,8 +55,8 @@
     font-size: 1rem;
     padding: 8px 16px;
     border-radius: 6px;
-    transition: 
-        background 0.2s, 
+    transition:
+        background 0.2s,
         color 0.2s,
         border-color 0.2s,
         box-shadow 0.2s,
@@ -53,46 +71,56 @@
     box-shadow: 0 2px 8px rgba(79,70,229,0.10);
 }
 
+/* search à esquerda */
 .search-icon {
     color: black;
     font-size: 1.5rem;
 }
 
 .search-bar {
-    position: relative;
-    right: 700px;
-    width: max-content;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    justify-self: start;
+    align-self: center;
     display: flex;
-    padding: 14px;
+    gap: 8px;
+    padding: 10px 14px;
     border-radius: 28px;
     background-color: #f6f6f6;
+    width: min(360px, 35%);
+    box-sizing: border-box;
 }
 
 .search-bar input {
     font-size: 16px;
     font-family: 'Lexend', sans-serif;
     color: #333333;
-    margin-left: 14px;
+    margin-left: 8px;
     outline: none;
     border: none;
     background: transparent;
+    width: 180px;
+    min-width: 120px;
 }
 
-/*login btns*/
-
+/* login / registro à direita */
 .login-buttons {
-    position: relative;
-    left: 560px;
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
     display: flex;
-    gap: 39px;
+    gap: 16px;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .register-button {
     background-color: #7C3AED;
     color: white;
     font-weight: 500;
-    padding: 5px 15px;
+    padding: 8px 14px;
     border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
@@ -106,7 +134,7 @@
     background-color: #fff;
     color: #000;
     font-weight: 500;
-    padding: 5px 15px;
+    padding: 8px 14px;
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
@@ -114,6 +142,54 @@
 
 .login-button:hover {
     background-color: #e6dddd;
+}
+
+/* Ajustes para larguras de monitor comuns (mantendo layout estável em tamanhos menores) */
+@media (max-width: 1600px) {
+    .search-bar { width: min(340px, 30%); }
+    .search-bar input { width: 160px; }
+}
+
+@media (max-width: 1400px) {
+    .search-bar { width: min(300px, 28%); }
+    .login-buttons { gap: 12px; }
+    .logo { max-width: 140px; }
+}
+
+@media (max-width: 1100px) {
+    .navbar { padding: 12px 20px; grid-template-columns: 1fr auto 1fr; min-height: 96px; }
+    .search-bar input { width: 140px; }
+    .search-bar { width: min(260px, 28%); }
+}
+
+/* Mobile-friendly fallback sem quebrar (mantém ordem visual solicitada) */
+@media (max-width: 900px) {
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-height: auto;
+        padding: 12px;
+    }
+    .search-bar, .login-buttons, .nav-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    .search-bar { order: 1; width: 90%; }
+    .logo { order: 2; width: 140px; }
+    .nav-buttons { order: 3; margin-top: 4px; flex-wrap: wrap; gap: 8px; }
+    .login-buttons { order: 4; width: 90%; gap: 8px; }
+    .nav-buttons a { padding: 6px 12px; }
+    .register-button, .login-button { padding: 8px 12px; }
+}
+
+@media (max-width: 600px) {
+    .logo { max-width: 120px; }
+    .search-bar input { width: 100px; min-width: 80px; }
+    .search-bar { padding: 8px 10px; border-radius: 18px; }
+    .nav-buttons a { font-size: 0.95rem; padding: 6px 10px; }
+    .register-button, .login-button { width: auto; padding: 6px 10px; }
 }
 
 
