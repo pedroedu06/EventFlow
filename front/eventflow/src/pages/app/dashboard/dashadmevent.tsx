@@ -30,7 +30,7 @@ const DashbordEvent: React.FC<Evento> = () => {
     const [modal, setOpenModal] = useState(false)
 
     useEffect(() => {
-        axios.get("http://localhost:5000/getEvent_MIN")
+        axios.get("http://localhost:5000/event/getEvent_MIN")
             .then(res => setEvento(res.data))
             .catch(error => console.log("error: ", error))
     }, []);
@@ -57,7 +57,7 @@ const DashbordEvent: React.FC<Evento> = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        axios.post("http://localhost:5000/registroevento", {
+        axios.post("http://localhost:5000/event/registroevento", {
             name,
             dataInicio,
             dataFim,
@@ -86,7 +86,7 @@ const DashbordEvent: React.FC<Evento> = () => {
         formData.append("file", file)
 
 
-        axios.post("http://localhost:5000/upload", formData, {
+        axios.post("http://localhost:5000/event/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -103,7 +103,6 @@ const DashbordEvent: React.FC<Evento> = () => {
 
     return (
         <div className="body">
-
             <nav className="navDashbord">
                 <a href="/" className="BacktoHome"><MdOutlineArrowBackIos /> Voltar para Home</a>
                 <img src="" alt="Dashboard" />

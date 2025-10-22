@@ -45,17 +45,13 @@
     display: block;
 }
 
-.login-button {
-    color: black;
-}
 
-/* right - login button */
 .navbar-register .login-button {
     justify-self: end;
     cursor: pointer;
     margin-right: 8px;
     border: none;
-    color: inherit;
+    color: rgb(104, 97, 97);
     padding: 8px 12px;
     border-radius: 6px;
 }
@@ -111,7 +107,7 @@
 .register-form button {
     width: 400px;
     height: 50px;
-    font-weight: 400;
+    font-weight: 600;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;

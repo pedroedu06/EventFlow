@@ -23,6 +23,8 @@ const Login: React.FC = () => {
         window.location.href = "/";
     }
 
+
+
     return (
         <div>
             <nav className="navbar-register">
@@ -38,7 +40,7 @@ const Login: React.FC = () => {
                 <input type="text" placeholder="Email ou Username" required onChange={(e) => setLogin(e.target.value)}/>
                 <input type="password" placeholder="Senha" required onChange={(e) => setPassword(e.target.value)}/>
                 <div className="abasdeesqueceuecriar">
-                    <a href="">Esqueceu a senha?</a>
+                    <a href="/recuperarSenha">Esqueceu a senha?</a>
                     <a href="/register ">Criar uma conta</a>
                 </div>
                 <button type="submit">Entrar</button>

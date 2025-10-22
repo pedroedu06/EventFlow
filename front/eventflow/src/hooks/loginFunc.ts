@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function userLogin(login: string, password: string): Promise<void> {
     try {
         const res = await axios.post(
-            'http://localhost:5000/login',
+            'http://localhost:5000/auth/login',
             { login, password },
             {
                 withCredentials: true,
@@ -13,10 +13,11 @@ export default async function userLogin(login: string, password: string): Promis
             }
         );
 
-        // O backend retorna apenas a role (por segurança não retorna o token no JSON)
         const role = res.data.role;
 
-        // Redirecionamento baseado na role
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('role', role);
+
         if (role === 'admin') {
             window.location.href = '/dashbordEvent';
         } else {

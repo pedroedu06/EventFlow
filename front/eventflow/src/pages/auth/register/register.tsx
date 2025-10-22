@@ -56,7 +56,7 @@ const Register: React.FC = () => {
 
         //listar usuarios
 
-        axios.get("http://localhost:5000/usuarios")
+        axios.get("http://localhost:5000/auth/usuarios")
             .then(response => {
                 const usuarios = response.data;
                 const usernameExists = usuarios.some((user: any) => user.username === username);
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
                     setErrorRegister("Email ou Username ja exixtem")
                     return;
                 } else {
-                    axios.post("http://localhost:5000/register",{
+                    axios.post("http://localhost:5000/auth/register",{
                         email,
                         username,
                         birthdate,

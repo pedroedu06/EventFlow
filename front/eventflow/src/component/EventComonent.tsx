@@ -38,7 +38,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
     }
     
     useEffect(() => {
-        axios.get("http://localhost:5000/getEvent_MIN")
+        axios.get("http://localhost:5000/event/getEvent_MIN")
             .then(response => {
                 setEvent(response.data)
                 
@@ -55,7 +55,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
     }, [selectEvent]);
 
     const getEventbyid = async (id: number) => {
-        axios.get(`http://localhost:5000/getEvents/${id}`)
+        axios.get(`http://localhost:5000/event/getEvents/${id}`)
             .then(res => {
                 setSelectEvent(res.data)
                 console.log(res.data)
@@ -77,7 +77,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
     }
 
     const deletElement = () => {
-        axios.delete(`http://localhost:5000/deleteEvent/${id}`)
+        axios.delete(`http://localhost:5000/event/deleteEvent/${id}`)
             .then(res => {
                 onDelete(id);
             })
@@ -108,7 +108,7 @@ const EventComponent: React.FC<Evento> = ({ id, nome, onDelete }) => {
         }  
 
 
-        axios.put(`http://localhost:5000/admEdit/${selectEvent.id}`, dadosUpdate)
+        axios.put(`http://localhost:5000/event/admEdit/${selectEvent.id}`, dadosUpdate)
             .then(res => {
                 console.log("data atualizada", res)
                 return res.data;

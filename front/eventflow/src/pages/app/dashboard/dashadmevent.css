@@ -1,3 +1,10 @@
+/* Variáveis e ajustes responsivos do container */
+:root{
+    --container-max-width: 1350px;
+    --container-min-width: 320px;
+    --container-gutter: 1rem;
+}
+
 .navDashbord {
     background-color: #c3c6c9;
     padding: 30px;
@@ -10,64 +17,88 @@
     color: #fff;
 }
 
+/* Container principal: responsivo e baseado em clamp() */
 .contentDashbord {
-    
-    align-items: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    align-items: stretch; /* filhos ocupam largura disponível */
+    width: 100%;
+    max-width: clamp(var(--container-min-width), 90vw, var(--container-max-width));
+    margin: 20px auto;
+    padding: 20px;
     background-color: #afafaf;
-    max-width: 100%;
-    margin-top: 20px;
     border-radius: 20px;
-    height: 820px;
+    min-height: 60vh;
+    height: auto;
+    overflow: auto;
 }
 
+/* Wrapper para controles (busca / adicionar) em linha e responsivo */
 .componentsAddEvent {
-   display: flex;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 12px 0;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
+/* Busca: largura fluida até um máximo */
 .contentDashbord .SearchEvent {
-    height: 30px;
-    width: 300px;
-    margin-top: 15px;
-    margin-left: 250px;
-    margin-right: 250px;
+    width: 100%;
+    max-width: 400px;
+    height: 36px;
     border-radius: 10px;
     border: none;
+    box-sizing: border-box;
+    margin: 0; /* centralizado pelo wrapper */
 }
 
+/* Botão adicionar: tamanho fixo máximo, adaptável em telas pequenas */
 .contentDashbord .AddEvent {
-    width: 150px;
-    height: 40px;
-    margin-top: 12px;
+    width: 100%;
+    max-width: 180px;
+    height: 44px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
-    transition: 1s;
+    transition: 0.3s;
+    box-sizing: border-box;
 }
 
-.AddEvent:hover {
-    background-color: #d1cfcf;
-}
-
+/* Lista de eventos: agora é uma lista vertical responsiva */
 .seeEvents {
     background-color: #fff;
     margin-top: 10px;
     padding: 20px;
     border-radius: 10px;
-    width: 1700px;
+    width: 100%;
     max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
 }
 
+/* Cada evento ocupa a largura total do container e se adapta */
 .EventComponent {
     padding: 10px;
     background-color: #dfd9d9;
-    margin-top: 10px;
+    margin-top: 0; /* espaçamento gerenciado pelo gap da lista */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
+/* Botões de detalhes alinhados com espaçamento */
 .detalsBtns {
     display: flex;
     gap: 10px;
@@ -116,14 +147,16 @@
 
 
 .modalContainer {
-    width: 500px;
-    height: 590px;
+    width: min(500px, 95vw);
+    height: auto;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     background-color: #fff;
     backdrop-filter: blur(5px);
-    padding: 50px;
+    padding: 30px;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .modalContainer input[type= 'file'] {
@@ -147,6 +180,44 @@
 .dateTime .horarioEvent {
     width: 100px;
     height: 10px;
+}
+
+.modalContainer textarea {
+    width: 100%;
+    height: 140px;
+    border-radius: 5px;
+    resize: none;
+}
+
+.modalContainer select {
+    width: 100px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.submitBtn {
+    width: 200px;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: 140px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.fechar {
+    width: 30px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+    top: -50px;
+    right: -520px;
+    border-radius: 5px;
 }
 
 .modalContainer textarea {
