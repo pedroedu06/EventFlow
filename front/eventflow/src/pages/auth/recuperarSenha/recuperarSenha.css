@@ -56,3 +56,16 @@ body {
 .backlogin {
     cursor: pointer;
 }
+
+.inputToken {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.inputToken input {
+    width: 35px;
+    padding: 10px;
+    height: 10px;
+    font-size: 18px;
+}
