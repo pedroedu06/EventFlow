@@ -1,11 +1,17 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request
 import smtplib 
 from email.message import EmailMessage
 import mysql.connector
 from datetime import datetime, timezone, timedelta
 import random
+import jwt
+from functools import wraps
+
 
 reset_pass_bp = Blueprint('reset_pass', __name__, url_prefix='/reset_pass')
+
+ALGORITHM = "HS256"
+SECRET_KEY = "CHAVE_SECRETA"
 
 db = mysql.connector.connect(
     host="localhost",
@@ -14,8 +20,16 @@ db = mysql.connector.connect(
     database="Eventflow"
 )
 
-if db.is_connected():
-    print("Conectado ao banco de dados")
+def get_db():
+    global db
+    if not db.is_connected():
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="Eventflow"
+        )
+    return db    
 
 def code_generate():
     code = random.randint(100000, 999999)
@@ -58,14 +72,21 @@ def send_reset_token():
         data = request.get_json()
         email = data.get("email")
 
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        cursor1 = get_db().cursor(dictionary=True)
+        cursor1.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        user = cursor1.fetchone()
+        cursor1.close()
 
-        if not user: 
-            return jsonify({"error": "Usuario nao encontrado"}), 404
-        
         code, expiration = code_generate()
+        
+        if user:
+            cursor2 = get_db().cursor(dictionary=True)
+            cursor2.execute(
+                "INSERT INTO resetSenhaTokens(email, code, expiration)VALUES (%s, %s, %s)",
+                (email, code, expiration)
+            )
+            get_db().commit()
+            cursor2.close()
 
         reset_password(code, email)
 
@@ -75,3 +96,53 @@ def send_reset_token():
         return jsonify({"error": "Erro ao processar a solicitação"}), 500
 
 
+@reset_pass_bp.route('/verify_token', methods=['POST'])
+def verify_token(): 
+    try: 
+        data = request.get_json()
+        email = data.get('email')
+        code = data.get('code')
+
+        cursor = get_db().cursor(dictionary=True)
+        cursor.execute("SELECT * FROM resetSenhaTokens WHERE email = %s", (email,))
+        token_entry = cursor.fetchone()
+        cursor.close()
+
+        if not token_entry:
+            return jsonify({"error": "Nenhum codigo encontrado"}), 404
+        
+        if token_entry["code"] != code:
+            return jsonify({"error": "Codigo invalido"}), 400
+        
+        if datetime.now() > token_entry['expiration']:
+            return jsonify({"error": "Codigo expirado"}), 400
+
+        return jsonify({"sucesso": "Token validado com sucesso!", "email": email}), 200
+    
+    except Exception as e:
+        print("error ao validadar tudo", e)
+        return jsonify({"error": "erro no banco ou internamente"})
+
+
+
+@reset_pass_bp.route("/changePass", methods=['POST'])
+def change_pass():
+    try:
+        data = request.get_json()
+        newPassword = data.get('newPass')
+        email = data.get('email')
+
+        if not email or not newPassword:
+            return jsonify({'error': 'senha esta errada'}), 400
+
+        get_db().reset_session()
+        cursor = get_db().cursor()
+        cursor.execute("UPDATE usuarios SET password = %s WHERE email = %s", (newPassword, email))
+        get_db().commit()
+        cursor.close()
+
+        return jsonify({"message": "Senha alterada com sucesso"}), 200
+
+    except Exception as e:
+        print(f"Erro ao alterar senha: {e}")
+        return jsonify({"error": "Erro interno no servidor"}), 500   

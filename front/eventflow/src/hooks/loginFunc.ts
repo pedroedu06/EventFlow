@@ -1,6 +1,9 @@
 import axios from "axios";
 
+
 export default async function userLogin(login: string, password: string): Promise<void> {
+    
+    
     try {
         const res = await axios.post(
             'http://localhost:5000/auth/login',
@@ -19,9 +22,9 @@ export default async function userLogin(login: string, password: string): Promis
         localStorage.setItem('role', role);
 
         if (role === 'admin') {
-            window.location.href = '/dashbordEvent';
+            window.location.href = '/dashbordEvent'
         } else {
-            window.location.href = '/home';
+            window.location.href = '/';
         }
         
     } catch (error: any) {

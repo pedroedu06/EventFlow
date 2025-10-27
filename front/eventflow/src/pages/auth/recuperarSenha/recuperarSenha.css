@@ -58,14 +58,14 @@ body {
 }
 
 .inputToken {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    gap: 13px;
 }
 
 .inputToken input {
-    width: 35px;
+    width: 33px;
     padding: 10px;
     height: 10px;
     font-size: 18px;
+    margin-left: 4px;
 }
+

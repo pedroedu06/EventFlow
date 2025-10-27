@@ -1,6 +1,7 @@
 import "./register.css";
 import { SlArrowLeft } from "react-icons/sl";
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Register: React.FC = () => {
@@ -13,6 +14,7 @@ const Register: React.FC = () => {
     const [errorEmailAddress, setErrorEmailAddress] = useState("");
     const [erroAge, setErrorAge] = useState("");
     const [errorRegister, setErrorRegister] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -74,6 +76,7 @@ const Register: React.FC = () => {
                     })
                     .then(response => {
                         console.log("Usuario criado com sucesso", response.data);
+                        navigate("/login")
                         })
                     .catch(error =>{
                         console.error("Erro ao registrar o usuario", error);

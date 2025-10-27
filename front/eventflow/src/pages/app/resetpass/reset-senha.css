@@ -1,0 +1,29 @@
+.changepassConteiner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh
+}
+
+.changepassMain {
+    display: flex;
+    flex-direction: column;
+    background-color: #4F46E5;
+    padding: 40px;
+    margin: 10px;
+    width: 500px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.changepassMain label {
+    color: white;
+}
+
+.changepassMain input {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    width: 420px;
+}

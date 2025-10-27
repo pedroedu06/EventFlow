@@ -198,6 +198,8 @@ body {
 
 .description-area {
     text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .event-list {
